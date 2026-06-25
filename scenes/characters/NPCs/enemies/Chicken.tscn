@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dbtnvlc1ecdwx"]
+
+[ext_resource type="Script" uid="uid://k6a0pt0kerrc" path="res://scenes/characters/NPCs/enemies/chicken.gd" id="1_mqwlf"]
+
+[node name="Chicken" type="CharacterBody2D" unique_id=1857620535]
+script = ExtResource("1_mqwlf")

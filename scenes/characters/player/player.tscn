@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://byi5u1vk0gmca" path="res://assets/game/characters/Knight/Sprites/without_outline/ATTACK 1.png" id="1_3xnwo"]
 [ext_resource type="Texture2D" uid="uid://hmlxadwow6nl" path="res://assets/game/characters/Knight/Sprites/without_outline/IDLE.png" id="1_686vu"]
+[ext_resource type="Script" uid="uid://cqpsx5ksk713o" path="res://scenes/characters/player/player.gd" id="1_ykrpk"]
 [ext_resource type="Texture2D" uid="uid://cjw6h4wclsysa" path="res://assets/game/characters/Knight/Sprites/without_outline/ATTACK 2.png" id="2_djydg"]
 [ext_resource type="Texture2D" uid="uid://c4ao2i8tiu4mu" path="res://assets/game/characters/Knight/Sprites/without_outline/RUN.png" id="2_hss88"]
 [ext_resource type="Texture2D" uid="uid://y70g8gh3vspj" path="res://assets/game/characters/Knight/Sprites/without_outline/ATTACK 3.png" id="3_bsn6e"]
@@ -474,7 +475,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_c1dak")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 10.0
 }, {
@@ -541,21 +542,27 @@ animations = [{
 size = Vector2(14, 31)
 
 [node name="Player" type="CharacterBody2D" unique_id=854518062]
+script = ExtResource("1_ykrpk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=733930609]
 sprite_frames = SubResource("SpriteFrames_b4gk5")
-animation = &"death"
+animation = &"jump"
 autoplay = "idle"
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=55062639]
 position = Vector2(0, 3.5)
 shape = SubResource("RectangleShape2D_3xnwo")
 
-[node name="StateMachine" type="Node" parent="." unique_id=2107962339]
+[node name="StateMachine" type="Node" parent="." unique_id=2107962339 node_paths=PackedStringArray("initial_node_state")]
 script = ExtResource("11_hv5x3")
+initial_node_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine" unique_id=1964092922]
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1964092922 node_paths=PackedStringArray("player", "animated_sprite_2d")]
 script = ExtResource("12_ykrpk")
+player = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 
 [node name="Walk" type="Node" parent="StateMachine" unique_id=1105121017]
 script = ExtResource("13_i1nod")
