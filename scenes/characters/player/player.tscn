@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://bqme7hlf3dnas" path="res://scenes/characters/player/idle_state.gd" id="12_ykrpk"]
 [ext_resource type="Script" uid="uid://dr5v8ldr13bl7" path="res://scenes/characters/player/walk_state.gd" id="13_i1nod"]
 [ext_resource type="Script" uid="uid://cawxjqke8tahs" path="res://scenes/characters/player/run_state.gd" id="14_4kqyw"]
+[ext_resource type="Script" uid="uid://bxmtjndfo1y1f" path="res://scenes/characters/player/jump_state.gd" id="16_i1nod"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4gk5"]
 atlas = ExtResource("1_3xnwo")
@@ -559,13 +560,14 @@ shape = SubResource("RectangleShape2D_3xnwo")
 script = ExtResource("11_hv5x3")
 initial_node_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine" unique_id=1964092922 node_paths=PackedStringArray("player", "animated_sprite_2d")]
+[node name="Idle" type="Node" parent="StateMachine" unique_id=1964092922]
 script = ExtResource("12_ykrpk")
-player = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 
 [node name="Walk" type="Node" parent="StateMachine" unique_id=1105121017]
 script = ExtResource("13_i1nod")
 
 [node name="Run" type="Node" parent="StateMachine" unique_id=1764855912]
 script = ExtResource("14_4kqyw")
+
+[node name="Jump" type="Node" parent="StateMachine" unique_id=797188437]
+script = ExtResource("16_i1nod")
