@@ -4,6 +4,8 @@ extends Node
 @warning_ignore("unused_signal")
 signal transition 
 
+var actor: CharacterBody2D
+var machine: NodeStateMachine
 
 func _on_process(_delta : float) -> void:
 	pass
