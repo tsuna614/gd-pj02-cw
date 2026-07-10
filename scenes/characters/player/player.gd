@@ -18,11 +18,20 @@ var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
 var has_dashed_in_air: bool = false
 
-@onready var state_machine: NodeStateMachine = $NodeStateMachine
+# Cached per-frame input state — populated once here, read everywhere else
+var move_direction: float = 0.0
+var has_move_input: bool = false
+
+@onready var state_machine: NodeStateMachine = $StateMachine
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 
 func _physics_process(delta: float) -> void:
+	# Input: poll exactly once per frame, here
+	var buffered_dir: Vector2 = GameInputEvents.movement_input()
+	move_direction = buffered_dir.x
+	has_move_input = GameInputEvents.is_movement_input()
+	
 	# shared timers used across states
 	if is_on_floor():
 		coyote_timer = coyote_time
@@ -40,9 +49,5 @@ func apply_gravity(delta: float) -> void:
 	velocity.y = min(velocity.y + gravity * delta, max_fall_speed)
 
 
-func get_input_dir() -> float:
-	return Input.get_axis("move_left", "move_right")
-
-
 func is_touching_wall() -> bool:
-	return is_on_wall() and get_input_dir() != 0
+	return is_on_wall() and move_direction != 0

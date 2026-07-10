@@ -13,7 +13,7 @@ func _on_physics_process(delta: float) -> void:
 	var player := actor as Player
 	player.apply_gravity(delta)
 
-	var dir := player.get_input_dir()
+	var dir := player.move_direction
 	player.velocity.x = move_toward(player.velocity.x, dir * player.speed, player.air_acceleration * delta)
 	if dir != 0:
 		player.sprite.flip_h = dir < 0
@@ -27,5 +27,7 @@ func _on_next_transitions() -> void:
 		transition.emit("wallslide")
 	elif Input.is_action_just_pressed("dash"):
 		transition.emit("dash")
-	elif player.velocity.y >= 0.0:
+	elif player.velocity.y > 0.0:
 		transition.emit("fall")
+	elif player.velocity.y == 0.0:
+		transition.emit("idle")
