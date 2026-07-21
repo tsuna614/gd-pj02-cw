@@ -8,7 +8,6 @@ var current_node_state : NodeState
 var current_node_state_name : String
 var parent_node_name: String
 
-
 func _ready() -> void:
 	parent_node_name = get_parent().name
 	
@@ -19,6 +18,11 @@ func _ready() -> void:
 			child.machine = self
 			child.actor = get_parent()
 	
+	# Defer entering the initial state until the next frame,
+	# by which point the parent's own _ready() has completed.
+	call_deferred("_enter_initial_state")
+
+func _enter_initial_state() -> void:
 	if initial_node_state:
 		initial_node_state._on_enter()
 		current_node_state = initial_node_state

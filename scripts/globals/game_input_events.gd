@@ -20,13 +20,11 @@ static func movement_input() -> Vector2:
 static func is_movement_input() -> bool:
 	return input_buffer.back() != Vector2.ZERO
 
+static func is_jump_input() -> bool:
+	return Input.is_action_just_pressed("jump")
 
-static func is_sprint_input() -> bool:
-	return Input.is_action_pressed("sprint")
-
-
-static func use_tool() -> bool:
-	return Input.is_action_just_pressed("hit")
+static func is_attack_input() -> bool:
+	return Input.is_action_just_pressed("attack")
 
 
 # Call this on respawn / scene reload / pause-exit to avoid stuck input state

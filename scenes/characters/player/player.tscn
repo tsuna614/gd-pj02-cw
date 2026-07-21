@@ -13,8 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://brkweqgisbcan" path="res://assets/game/characters/Knight/Sprites/without_outline/JUMP.png" id="8_i1nod"]
 [ext_resource type="Script" uid="uid://ts6w1rrej2q3" path="res://scripts/state_machine/node_state_machine.gd" id="11_hv5x3"]
 [ext_resource type="Script" uid="uid://bqme7hlf3dnas" path="res://scenes/characters/player/idle_state.gd" id="12_ykrpk"]
-[ext_resource type="Script" uid="uid://dr5v8ldr13bl7" path="res://scenes/characters/player/walk_state.gd" id="13_i1nod"]
 [ext_resource type="Script" uid="uid://cawxjqke8tahs" path="res://scenes/characters/player/run_state.gd" id="14_4kqyw"]
+[ext_resource type="Script" uid="uid://c45qk3qirig4v" path="res://scenes/characters/player/attack_state.gd" id="16_4kqyw"]
 [ext_resource type="Script" uid="uid://bxmtjndfo1y1f" path="res://scenes/characters/player/jump_state.gd" id="16_i1nod"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4gk5"]
@@ -547,10 +547,8 @@ script = ExtResource("1_ykrpk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=733930609]
 sprite_frames = SubResource("SpriteFrames_b4gk5")
-animation = &"jump"
+animation = &"attack_1"
 autoplay = "idle"
-frame = 4
-frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=55062639]
 position = Vector2(0, 3.5)
@@ -563,11 +561,11 @@ initial_node_state = NodePath("Idle")
 [node name="Idle" type="Node" parent="StateMachine" unique_id=1964092922]
 script = ExtResource("12_ykrpk")
 
-[node name="Walk" type="Node" parent="StateMachine" unique_id=1105121017]
-script = ExtResource("13_i1nod")
-
 [node name="Run" type="Node" parent="StateMachine" unique_id=1764855912]
 script = ExtResource("14_4kqyw")
 
 [node name="Jump" type="Node" parent="StateMachine" unique_id=797188437]
 script = ExtResource("16_i1nod")
+
+[node name="Attack" type="Node" parent="StateMachine" unique_id=422225076]
+script = ExtResource("16_4kqyw")

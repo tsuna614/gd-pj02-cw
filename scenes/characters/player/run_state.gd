@@ -11,7 +11,8 @@ func _on_physics_process(delta: float) -> void:
 
 	var dir := player.move_direction
 	player.velocity.x = move_toward(player.velocity.x, dir * player.speed, player.acceleration * delta)
-	player.sprite.flip_h = dir < 0
+	if dir != 0:
+		player.sprite.flip_h = dir < 0
 
 	player.move_and_slide()
 
@@ -20,7 +21,7 @@ func _on_next_transitions() -> void:
 
 	if not player.is_on_floor():
 		transition.emit("fall")
-	elif player.jump_buffer_timer > 0.0 and player.coyote_timer > 0.0:
+	elif player.jump_buffer_timer.is_active() and player.coyote_timer.is_active():
 		transition.emit("jump")
 	elif player.move_direction == 0:
 		transition.emit("idle")

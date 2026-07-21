@@ -15,9 +15,11 @@ func _on_next_transitions() -> void:
 
 	if not player.is_on_floor():
 		transition.emit("fall")
-	elif player.jump_buffer_timer > 0.0 and player.coyote_timer > 0.0:
+	elif player.jump_buffer_timer.is_active() and player.coyote_timer.is_active():
 		transition.emit("jump")
 	elif player.move_direction != 0:
 		transition.emit("run")
 	elif Input.is_action_just_pressed("dash"):
 		transition.emit("dash")
+	elif GameInputEvents.is_attack_input():
+		transition.emit("attack")

@@ -5,8 +5,8 @@ extends NodeState
 func _on_enter() -> void:
 	var player := actor as Player
 	player.velocity.y = player.jump_velocity
-	player.coyote_timer = 0.0
-	player.jump_buffer_timer = 0.0
+	player.coyote_timer.time_left = 0.0
+	player.jump_buffer_timer.time_left = 0.0
 	player.sprite.play("jump")
 
 func _on_physics_process(delta: float) -> void:
