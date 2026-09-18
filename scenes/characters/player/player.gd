@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 
 func _update_input():
 	# Input: poll exactly once per frame, here
-	var buffered_dir: Vector2 = GameInputEvents.movement_input()
+	var buffered_dir: Vector2 = GameInputEvents.movement_input().normalized()
 	move_direction = buffered_dir.x
 	has_move_input = GameInputEvents.is_movement_input()
 
