@@ -45,6 +45,10 @@ Character behaviour is a state machine built from **child nodes**, not code:
 - Input actions (`project.godot`): `move_left`, `move_right`, `jump`, `dash`, `attack`.
 - Attack combo: `combo_index` (0 = not attacking, 1–3 = active swing, matching `attack_1..3` animations) and `combo_buffered` live on `Player`; `AttackState` advances the chain when a swing's animation finishes, then idles inside a `combo_reset_time` window (`_awaiting_chain`) to catch a late press before returning to `idle`. Animation `is_playing()` is used to detect swing end, so the attack animations must not loop.
 
+### Combat (`scripts/combat/`)
+
+`Hitbox` (deals damage) and `Hurtbox` (receives it) are `Area2D`s; `Health` is a plain `Node` with `damaged`/`died` signals. A `Hitbox` starts inactive and is toggled with `set_active()` by disabling its child shapes (deferred). Hits are **edge-triggered**: a `Hurtbox` is hit when the `Hitbox` activates while overlapping (or enters while active), at most once per activation — so each combo swing must deactivate and reactivate. `Hurtbox.enabled = false` ignores hits. Named 2D physics layers (`project.godot`): 1 `world`, 2 `player`, 3 `enemy`, 4 `player_hitbox`, 5 `enemy_hurtbox`.
+
 ### Work-in-progress gaps
 
 The codebase is mid-build. States are referenced in transitions (`dash`, `wallslide`) that have **no scripts or nodes yet**, so those transitions currently do nothing — e.g. `JumpState`/`FallState` emit `wallslide` but the player has no `Wallslide` state. `Player.check_common_transitions()` is defined but unused. `walk_state.gd` is an empty template and not in the scene. `chicken.gd` is the stock Godot `CharacterBody2D` template (uses `ui_*` actions), not real enemy AI. Verify a state actually exists in `player.tscn` before relying on a transition to it.
