@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://c45qk3qirig4v" path="res://scenes/characters/player/attack_state.gd" id="16_4kqyw"]
 [ext_resource type="Script" uid="uid://bxmtjndfo1y1f" path="res://scenes/characters/player/jump_state.gd" id="16_i1nod"]
 [ext_resource type="Script" uid="uid://b6ntujsji5i2l" path="res://scenes/characters/player/fall_state.gd" id="17_fall0"]
+[ext_resource type="Script" uid="uid://cd1b3v1bfx8fq" path="res://scripts/combat/hitbox.gd" id="18_hitbx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4gk5"]
 atlas = ExtResource("1_3xnwo")
@@ -543,7 +544,11 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3xnwo"]
 size = Vector2(14, 31)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sword"]
+size = Vector2(28, 36)
+
 [node name="Player" type="CharacterBody2D" unique_id=854518062]
+collision_layer = 2
 script = ExtResource("1_ykrpk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=733930609]
@@ -554,6 +559,15 @@ autoplay = "idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=55062639]
 position = Vector2(0, 3.5)
 shape = SubResource("RectangleShape2D_3xnwo")
+
+[node name="SwordHitbox" type="Area2D" parent="." unique_id=1720394856]
+position = Vector2(18, 0)
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("18_hitbx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SwordHitbox" unique_id=640218375]
+shape = SubResource("RectangleShape2D_sword")
 
 [node name="StateMachine" type="Node" parent="." unique_id=2107962339 node_paths=PackedStringArray("initial_node_state")]
 script = ExtResource("11_hv5x3")

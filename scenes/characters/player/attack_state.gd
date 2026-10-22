@@ -7,6 +7,13 @@ extends NodeState
 # re-armed every frame after it expires (which would freeze the state).
 var _awaiting_chain: bool = false
 
+# Per swing, indexed by combo_index - 1. Active frames (inclusive) are the
+# sword-out frames measured from the Knight sprite sheets; tweak by eye.
+@export var active_frames: Array[Vector2i] = [Vector2i(3, 4), Vector2i(1, 2), Vector2i(2, 4)]
+@export var swing_damage: Array[int] = [1, 1, 2]
+# x is applied in the player's facing direction.
+@export var knockback: Vector2 = Vector2(180.0, -120.0)
+
 func _on_enter() -> void:
 	var player := actor as Player
 	player.combo_index = 1
@@ -20,6 +27,7 @@ func _on_physics_process(delta: float) -> void:
 	player.apply_gravity(delta)
 	player.velocity.x = move_toward(player.velocity.x, 0.0, player.friction * delta)
 	player.move_and_slide()
+	_update_sword(player)
 
 	if GameInputEvents.is_attack_input():
 		player.combo_buffered = true
@@ -69,3 +77,20 @@ func _on_exit() -> void:
 	player.combo_buffered = false
 	player.combo_timer.time_left = 0.0
 	_awaiting_chain = false
+	player.sword_hitbox.set_active(false)
+
+# The sword is live only on the current swing's active frames. Hitbox hits are
+# edge-triggered, so leaving those frames between swings re-arms the next one.
+func _update_sword(player: Player) -> void:
+	var active := false
+	if not _awaiting_chain and player.combo_index > 0:
+		var frames := active_frames[player.combo_index - 1]
+		active = player.sprite.frame >= frames.x and player.sprite.frame <= frames.y
+
+	if active and not player.sword_hitbox.is_active():
+		var facing := player.facing()
+		player.sword_hitbox.position.x = absf(player.sword_hitbox.position.x) * facing
+		player.sword_hitbox.damage = swing_damage[player.combo_index - 1]
+		player.sword_hitbox.knockback = Vector2(knockback.x * facing, knockback.y)
+
+	player.sword_hitbox.set_active(active)

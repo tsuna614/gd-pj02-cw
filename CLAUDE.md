@@ -44,6 +44,7 @@ Character behaviour is a state machine built from **child nodes**, not code:
 - `GameInputEvents` (`scripts/globals/game_input_events.gd`) is a static helper class (not an autoload). `movement_input()` keeps a static buffer of held left/right so the most recently pressed direction wins; it mutates state on each call, so it should only be called from `Player._update_input`. Call `GameInputEvents.reset()` on respawn/scene reload.
 - Input actions (`project.godot`): `move_left`, `move_right`, `jump`, `dash`, `attack`.
 - Attack combo: `combo_index` (0 = not attacking, 1–3 = active swing, matching `attack_1..3` animations) and `combo_buffered` live on `Player`; `AttackState` advances the chain when a swing's animation finishes, then idles inside a `combo_reset_time` window (`_awaiting_chain`) to catch a late press before returning to `idle`. Animation `is_playing()` is used to detect swing end, so the attack animations must not loop.
+- Sword: `Player/SwordHitbox` (a `Hitbox`, layer `player_hitbox`) is driven by `AttackState._update_sword()`, which activates it only on each swing's `active_frames` (exported, indexed by `combo_index - 1`, measured from the sprite sheets) and sets `damage`/`knockback` and its x position from `Player.facing()`. The player body is on layer `player`.
 
 ### Combat (`scripts/combat/`)
 

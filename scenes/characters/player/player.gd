@@ -34,6 +34,7 @@ var has_move_input: bool = false
 
 @onready var state_machine: NodeStateMachine = $StateMachine
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sword_hitbox: Hitbox = $SwordHitbox
 
 
 func _physics_process(delta: float) -> void:
@@ -66,6 +67,9 @@ func _update_timers(delta: float) -> void:
 
 func apply_gravity(delta: float) -> void:
 	velocity.y = min(velocity.y + gravity * delta, max_fall_speed)
+
+func facing() -> float:
+	return -1.0 if sprite.flip_h else 1.0
 
 func is_touching_wall() -> bool:
 	return is_on_wall() and move_direction != 0
