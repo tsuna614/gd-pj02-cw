@@ -29,5 +29,5 @@ func _on_next_transitions() -> void:
 		transition.emit("dash")
 	elif player.velocity.y > 0.0:
 		transition.emit("fall")
-	elif player.velocity.y == 0.0:
+	elif player.is_on_floor():
 		transition.emit("idle")

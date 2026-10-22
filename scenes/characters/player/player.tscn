@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://cawxjqke8tahs" path="res://scenes/characters/player/run_state.gd" id="14_4kqyw"]
 [ext_resource type="Script" uid="uid://c45qk3qirig4v" path="res://scenes/characters/player/attack_state.gd" id="16_4kqyw"]
 [ext_resource type="Script" uid="uid://bxmtjndfo1y1f" path="res://scenes/characters/player/jump_state.gd" id="16_i1nod"]
+[ext_resource type="Script" uid="uid://b6ntujsji5i2l" path="res://scenes/characters/player/fall_state.gd" id="17_fall0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b4gk5"]
 atlas = ExtResource("1_3xnwo")
@@ -569,3 +570,6 @@ script = ExtResource("16_i1nod")
 
 [node name="Attack" type="Node" parent="StateMachine" unique_id=422225076]
 script = ExtResource("16_4kqyw")
+
+[node name="Fall" type="Node" parent="StateMachine" unique_id=1385920471]
+script = ExtResource("17_fall0")
