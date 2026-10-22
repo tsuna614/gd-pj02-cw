@@ -24,20 +24,29 @@ func _on_physics_process(delta: float) -> void:
 	if GameInputEvents.is_attack_input():
 		player.combo_buffered = true
 
+	if _awaiting_chain:
+		# Idle is playing (it loops, so we can't rely on is_playing() here)
+		# while we wait out combo_timer for a possible late chain.
+		if player.combo_buffered and player.combo_index > 0 and player.combo_index < 3:
+			player.combo_index += 1
+			player.combo_buffered = false
+			_awaiting_chain = false
+			player.sprite.play("attack_%d" % player.combo_index)
+		return
+
 	if player.sprite.is_playing():
 		return
 
-	# Swing finished: chain immediately if a strike was buffered, otherwise
-	# open the combo_reset_time window once to still catch a late press.
+	# Swing just finished: chain immediately if a strike was buffered,
+	# otherwise settle into idle and open the combo_reset_time window
+	# once to still catch a late press.
 	if player.combo_buffered and player.combo_index > 0 and player.combo_index < 3:
 		player.combo_index += 1
 		player.combo_buffered = false
-		player.combo_timer.time_left = 0.0
-		_awaiting_chain = false
 		player.sprite.play("attack_%d" % player.combo_index)
-	elif not _awaiting_chain:
+	else:
 		_awaiting_chain = true
-		# player.sprite.play("idle")
+		player.sprite.play("idle")
 		player.combo_timer.start()
 
 func _on_next_transitions() -> void:
@@ -49,6 +58,8 @@ func _on_next_transitions() -> void:
 		transition.emit("jump")
 	elif Input.is_action_just_pressed("dash"):
 		transition.emit("dash")
+	elif player.move_direction != 0:
+		transition.emit("run")
 	elif _awaiting_chain and not player.combo_timer.is_active():
 		transition.emit("idle")
 
