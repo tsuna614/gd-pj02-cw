@@ -50,6 +50,10 @@ Character behaviour is a state machine built from **child nodes**, not code:
 
 `Hitbox` (deals damage) and `Hurtbox` (receives it) are `Area2D`s; `Health` is a plain `Node` with `damaged`/`died` signals. A `Hitbox` starts inactive and is toggled with `set_active()` by disabling its child shapes (deferred). Hits are **edge-triggered**: a `Hurtbox` is hit when the `Hitbox` activates while overlapping (or enters while active), at most once per activation — so each combo swing must deactivate and reactivate. `Hurtbox.enabled = false` ignores hits. Named 2D physics layers (`project.godot`): 1 `world`, 2 `player`, 3 `enemy`, 4 `player_hitbox`, 5 `enemy_hurtbox`.
 
+### Chicken (`scenes/characters/NPCs/enemies/`)
+
+`Chicken` (`chicken.gd`, body on layer `enemy`, collides only with `world`, so it and the player pass through each other) uses the same `NodeStateMachine` with `Wander` / `Idle` states (`ChickenWanderState` / `ChickenIdleState` — `IdleState` is taken by the player). Wander turns via `Chicken.should_turn()` (wall, or `LedgeRay` finds no floor ahead). It has a `Hurtbox` (layer `enemy_hurtbox`) and `Health`, but nothing handles `Hurtbox.hit` yet. The sprite is a placeholder (`icon.svg`) with animations `idle`/`walk`/`hurt`/`death`. Each chicken also prints its state every physics frame.
+
 ### Work-in-progress gaps
 
-The codebase is mid-build. States are referenced in transitions (`dash`, `wallslide`) that have **no scripts or nodes yet**, so those transitions currently do nothing — e.g. `JumpState`/`FallState` emit `wallslide` but the player has no `Wallslide` state. `Player.check_common_transitions()` is defined but unused. `walk_state.gd` is an empty template and not in the scene. `chicken.gd` is the stock Godot `CharacterBody2D` template (uses `ui_*` actions), not real enemy AI. Verify a state actually exists in `player.tscn` before relying on a transition to it.
+The codebase is mid-build. States are referenced in transitions (`dash`, `wallslide`) that have **no scripts or nodes yet**, so those transitions currently do nothing — e.g. `JumpState`/`FallState` emit `wallslide` but the player has no `Wallslide` state. `Player.check_common_transitions()` is defined but unused. `walk_state.gd` is an empty template and not in the scene. Verify a state actually exists in `player.tscn` before relying on a transition to it.

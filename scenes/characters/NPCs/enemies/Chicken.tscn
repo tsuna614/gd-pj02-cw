@@ -1,6 +1,89 @@
 [gd_scene format=3 uid="uid://dbtnvlc1ecdwx"]
 
 [ext_resource type="Script" uid="uid://k6a0pt0kerrc" path="res://scenes/characters/NPCs/enemies/chicken.gd" id="1_mqwlf"]
+[ext_resource type="Texture2D" uid="uid://b14fqn1fhafkt" path="res://icon.svg" id="2_icon"]
+[ext_resource type="Script" uid="uid://gq8axoeq15xo" path="res://scripts/combat/hurtbox.gd" id="3_hurt"]
+[ext_resource type="Script" uid="uid://d3gfolhv4a5uv" path="res://scripts/combat/health.gd" id="4_hlth"]
+[ext_resource type="Script" uid="uid://ts6w1rrej2q3" path="res://scripts/state_machine/node_state_machine.gd" id="5_nsm"]
+[ext_resource type="Script" uid="uid://c8bdbqafgi3x" path="res://scenes/characters/NPCs/enemies/chicken_wander_state.gd" id="6_wndr"]
+[ext_resource type="Script" uid="uid://bn0llq0kuge8v" path="res://scenes/characters/NPCs/enemies/chicken_idle_state.gd" id="7_idle"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_chkn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_icon")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_icon")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_icon")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_icon")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(16, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(18, 16)
 
 [node name="Chicken" type="CharacterBody2D" unique_id=1857620535]
+collision_layer = 4
 script = ExtResource("1_mqwlf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1203948571]
+modulate = Color(1, 0.95, 0.6, 1)
+position = Vector2(0, -2)
+scale = Vector2(0.15, 0.15)
+sprite_frames = SubResource("SpriteFrames_chkn")
+animation = &"idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=482917364]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="LedgeRay" type="RayCast2D" parent="." unique_id=938274615]
+position = Vector2(9, 0)
+target_position = Vector2(0, 16)
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1748392016]
+collision_layer = 16
+collision_mask = 8
+script = ExtResource("3_hurt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=2039481726]
+shape = SubResource("RectangleShape2D_hurt")
+
+[node name="Health" type="Node" parent="." unique_id=1592837460]
+script = ExtResource("4_hlth")
+
+[node name="StateMachine" type="Node" parent="." unique_id=873920145 node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("5_nsm")
+initial_node_state = NodePath("Wander")
+
+[node name="Wander" type="Node" parent="StateMachine" unique_id=1309482756]
+script = ExtResource("6_wndr")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=561029384]
+script = ExtResource("7_idle")
