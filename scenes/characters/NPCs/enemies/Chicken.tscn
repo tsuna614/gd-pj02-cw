@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://ts6w1rrej2q3" path="res://scripts/state_machine/node_state_machine.gd" id="5_nsm"]
 [ext_resource type="Script" uid="uid://c8bdbqafgi3x" path="res://scenes/characters/NPCs/enemies/chicken_wander_state.gd" id="6_wndr"]
 [ext_resource type="Script" uid="uid://bn0llq0kuge8v" path="res://scenes/characters/NPCs/enemies/chicken_idle_state.gd" id="7_idle"]
+[ext_resource type="Script" uid="uid://b5rk3qu8ma7i5" path="res://scenes/characters/NPCs/enemies/chicken_hurt_state.gd" id="8_hurt"]
+[ext_resource type="Script" uid="uid://biwc1tycqy3mq" path="res://scenes/characters/NPCs/enemies/chicken_dead_state.gd" id="9_dead"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_chkn"]
 animations = [{
@@ -87,3 +89,9 @@ script = ExtResource("6_wndr")
 
 [node name="Idle" type="Node" parent="StateMachine" unique_id=561029384]
 script = ExtResource("7_idle")
+
+[node name="Hurt" type="Node" parent="StateMachine" unique_id=1450938271]
+script = ExtResource("8_hurt")
+
+[node name="Dead" type="Node" parent="StateMachine" unique_id=702938415]
+script = ExtResource("9_dead")

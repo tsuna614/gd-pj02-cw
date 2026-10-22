@@ -11,8 +11,9 @@ var _awaiting_chain: bool = false
 # sword-out frames measured from the Knight sprite sheets; tweak by eye.
 @export var active_frames: Array[Vector2i] = [Vector2i(3, 4), Vector2i(1, 2), Vector2i(2, 4)]
 @export var swing_damage: Array[int] = [1, 1, 2]
-# x is applied in the player's facing direction.
-@export var knockback: Vector2 = Vector2(180.0, -120.0)
+# x is applied in the player's facing direction. Small on swings 1-2 so the
+# target stays in reach for the rest of the combo; the finisher launches.
+@export var swing_knockback: Array[Vector2] = [Vector2(60.0, -80.0), Vector2(60.0, -80.0), Vector2(220.0, -180.0)]
 
 func _on_enter() -> void:
 	var player := actor as Player
@@ -91,6 +92,7 @@ func _update_sword(player: Player) -> void:
 		var facing := player.facing()
 		player.sword_hitbox.position.x = absf(player.sword_hitbox.position.x) * facing
 		player.sword_hitbox.damage = swing_damage[player.combo_index - 1]
+		var knockback := swing_knockback[player.combo_index - 1]
 		player.sword_hitbox.knockback = Vector2(knockback.x * facing, knockback.y)
 
 	player.sword_hitbox.set_active(active)
